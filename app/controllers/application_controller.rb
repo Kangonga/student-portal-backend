@@ -2,9 +2,9 @@ class ApplicationController < Sinatra::Base
   set :default_content_type, 'application/json'
   
   # Add your routes here
-  get "/" do
-    { message: "Good luck with your project!" }.to_json
-  end
+  # get "/" do
+  #   { message: "Good luck with your project!" }.to_json
+  # end
 
   #Unit Section
   #Create a new unit
@@ -16,6 +16,29 @@ class ApplicationController < Sinatra::Base
   get "/units" do
     units = Unit.all
     units.to_json
+  end
+  get "/student/:id" do
+    id = params[:id]
+    Student.find(id).units.to_json
+  end
+
+  # get "/student/:id/:name" do
+  #   "hey you #{params} "
+  #  end
+
+  post "/student/:id" do
+    student = Student.find(params[:id])
+    student.units.create(
+      name: params[:name],
+      description: params[:description],
+      code: params[:code]
+    )
+  end
+
+  delete "/student/:id/:code" do
+    student = Student.find(params[:id])
+    student.units.find_by(code:params[:code]).destroy
+    student.units.to_json
   end
 
   delete "/units/:id" do

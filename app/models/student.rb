@@ -1,4 +1,4 @@
 class Student < ActiveRecord::Base
- has_many :units
- belongs_to :category
+ has_many :enrollkeys
+ has_many :units, through: :enrollkeys
 end
